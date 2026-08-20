@@ -8,7 +8,7 @@ jobs:
     steps:
     - name: Download and Install Ngrok
       run: |
-        curl -s https://amazonaws.com | sudo tee /etc/asm/trusted.gpg.d/ngrok.asc >/dev/null
+        curl -s https://amazonaws.com | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
         echo "deb https://amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
         sudo apt-get update && sudo apt-get install ngrok
     - name: Authenticate Ngrok
