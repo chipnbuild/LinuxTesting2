@@ -6,11 +6,10 @@ jobs:
   run-vps:
     runs-on: ubuntu-latest
     steps:
-    - name: Download and Install Ngrok
+    - name: Direct Download Ngrok
       run: |
-        curl -s https://amazonaws.com | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
-        echo "deb https://amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
-        sudo apt-get update && sudo apt-get install ngrok
+        wget -q https://equinox.io
+        sudo tar -xzf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
     - name: Authenticate Ngrok
       run: ngrok config add-authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
     - name: Set Linux Password
