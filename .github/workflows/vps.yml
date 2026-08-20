@@ -6,19 +6,19 @@ jobs:
   run-vps:
     runs-on: ubuntu-latest
     steps:
-    - name: Direct Download Ngrok
-      run: |
-        wget -q https://equinox.io
-        sudo tar -xzf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
-    - name: Authenticate Ngrok
-      run: ngrok config add-authtoken ${{ secrets.NGROK_AUTH_TOKEN }}
-    - name: Set Linux Password
+    - name: Start Free Terminal Tunnel
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Setup Dynamic Reverse Shell
       run: |
         sudo echo "root:Password123" | chpasswd
         sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
         sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
         sudo service ssh restart
-    - name: Start Secure Link
+        
+    - name: Activate Ngrok Connection
       run: |
-        ngrok tcp 22 --log=stdout &
+        docker run -d -p 2222:22 -e NGROK_AUTHTOKEN=${{ secrets.NGROK_AUTH_TOKEN }} ngrok/ngrok tcp 22
         sleep 20
